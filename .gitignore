@@ -1,3 +1,10 @@
 bin
 *.class
 pass.txt
+.mvn
+.settings
+.classpath
+.project
+HELP.md
+mvnw
+mvnw.cmd
