@@ -76,6 +76,12 @@ public class EmployeeController {
 		return employeeService.getEmployeesByLastName(lname);
 	}
 	
+	@GetMapping("/employees/byemail/{e}")
+	public Employee getByEmailId(@PathVariable(value="e") String email)
+	{
+		return employeeService.getEmployeeByEmailId(email);
+	}
+	
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public Map<String, String> handleMethodArgumentNotValid(MethodArgumentNotValidException ex)

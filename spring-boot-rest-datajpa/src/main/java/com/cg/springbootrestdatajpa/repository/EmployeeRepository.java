@@ -10,4 +10,5 @@ import com.cg.springbootrestdatajpa.model.Employee;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 	List<Employee> findByLastName(String lastName);
+	Employee findByEmailId(String email);
 }
