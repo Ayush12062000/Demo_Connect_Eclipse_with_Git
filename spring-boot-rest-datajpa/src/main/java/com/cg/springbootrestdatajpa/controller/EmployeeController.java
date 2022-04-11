@@ -25,23 +25,30 @@ import com.cg.springbootrestdatajpa.exception.EmployeeNotFoundException;
 import com.cg.springbootrestdatajpa.model.Employee;
 import com.cg.springbootrestdatajpa.service.EmployeeService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/api")
+@Api(produces = "application/json", value = "Operation related to Employee")
 public class EmployeeController {
 	@Autowired
 	public EmployeeService employeeService;
 	
 	@PostMapping("/employees/new")
+	@ApiOperation(value = "Create New employee")
 	public Employee createEmployee(@Valid @RequestBody Employee employee) {
 		return employeeService.createEmployee(employee);
 	}
 	@GetMapping("/employees/all")
+	@ApiOperation(value = "View all employees")
 	public List<Employee> getAllEmployee()
 	{
 		return employeeService.getAllEmployees();
 	}
 	//http://localhost:808/api/employees/byid/103
 	@GetMapping("/employees/byid/{id}")
+	@ApiOperation(value = "Retrieve Specific employee with given Id")
 	public ResponseEntity<Employee> getEmployeeById(@PathVariable(value="id") Long empId) throws EmployeeNotFoundException
 	{
 		Employee emp = employeeService.getEmployeeById(empId).orElseThrow(()-> new EmployeeNotFoundException("No employee found with this ID:"+ empId));
@@ -49,6 +56,7 @@ public class EmployeeController {
 	}
 	
 	@PutMapping("/employees/update/{id}")
+	@ApiOperation(value = "Update existing Employee")
 	public ResponseEntity<Employee> updateEmployee(@PathVariable(value="id") Long empId,@Valid @RequestBody Employee empDetails) throws EmployeeNotFoundException
 	{
 		Employee emp = employeeService.getEmployeeById(empId).orElseThrow(()-> new EmployeeNotFoundException("No employee found with this ID:"+ empId));
@@ -56,11 +64,12 @@ public class EmployeeController {
 		emp.setLastName(empDetails.getLastName());
 		emp.setEmailId(empDetails.getEmailId());
 		
-		Employee updatedEmployee  =employeeService.updateEmployee(emp);
+		Employee updatedEmployee = employeeService.updateEmployee(emp);
 		return ResponseEntity.ok(updatedEmployee);
 	}
 	
 	@DeleteMapping("/employees/delete/id/{id}")
+	@ApiOperation(value = "Delete an employee with given Id")
 	public Map<String, Boolean> deleteEmployee(@PathVariable(value="id") Long empId) throws EmployeeNotFoundException
 	{
 		Employee emp = employeeService.getEmployeeById(empId).orElseThrow(()-> new EmployeeNotFoundException("No employee found with this ID:"+ empId));
@@ -71,12 +80,14 @@ public class EmployeeController {
 	}
 	
 	@GetMapping("/employees/bylastname/{lastname}")
+	@ApiOperation(value = "Retrieve Employees with same Last Name")
 	public List<Employee> getEmployeesWithSameLastName(@PathVariable(value="lastname") String lname)
 	{
 		return employeeService.getEmployeesByLastName(lname);
 	}
 	
 	@GetMapping("/employees/byemail/{e}")
+	@ApiOperation(value = "Retrieve Employees with Specific Email")
 	public Employee getByEmailId(@PathVariable(value="e") String email)
 	{
 		return employeeService.getEmployeeByEmailId(email);
